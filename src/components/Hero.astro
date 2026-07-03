@@ -16,7 +16,7 @@ const { dmgUrl, repoUrl, version } = await getRelease()
         manage volumes and networks, and control the background service — all from one window.
       </p>
       <div class="hero-cta" data-reveal style="--reveal-delay:180ms">
-        <a class="pill pill-accent" href={dmgUrl}>
+        <a class="pill pill-accent" href={dmgUrl} data-dl-href>
           <Icon name="download" size={18} /> Download for macOS
         </a>
         <a class="pill pill-ghost" href={repoUrl} target="_blank" rel="noopener">
@@ -24,7 +24,7 @@ const { dmgUrl, repoUrl, version } = await getRelease()
         </a>
       </div>
       <p class="hero-meta" data-reveal style="--reveal-delay:240ms">
-        Signed &amp; notarized <code>{version}</code> · Requires macOS 26 on Apple silicon<span class="msep">·</span><a class="hero-link" href="#install">build from source</a>
+        Signed &amp; notarized <code data-dl-version>{version}</code> · Requires macOS 26 on Apple silicon<span class="msep">·</span><a class="hero-link" href="#install">build from source</a>
       </p>
     </div>
 

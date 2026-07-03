@@ -183,6 +183,50 @@ function initPullDemo() {
   window.setTimeout(tick, 1200)
 }
 
+/* ---------------------------------------------------- latest release */
+// The download links are resolved at BUILD time, so a deploy that predates a
+// new release would point at the old DMG. This re-checks the GitHub Releases
+// API on load and rewrites the links/version/size to the true latest, so the
+// site self-heals between deploys. Build-time values are the no-JS fallback;
+// any failure here leaves them untouched.
+function initLatestRelease() {
+  const links = Array.from(document.querySelectorAll<HTMLAnchorElement>("[data-dl-href]"))
+  if (!links.length) return
+  // Derive owner/repo from the build-time link — no hardcoded repo to drift.
+  const m = (links[0].getAttribute("href") || "").match(/github\.com\/([^/]+\/[^/]+)\/releases/)
+  if (!m) return
+  const repo = m[1]
+
+  const ctrl = new AbortController()
+  const timer = window.setTimeout(() => ctrl.abort(), 4000)
+  fetch(`https://api.github.com/repos/${repo}/releases/latest`, {
+    headers: { Accept: "application/vnd.github+json" },
+    signal: ctrl.signal,
+  })
+    .then((r) => (r.ok ? r.json() : Promise.reject(new Error(String(r.status)))))
+    .then((data: { tag_name?: string; assets?: { name?: string; browser_download_url?: string; size?: number }[] }) => {
+      const dmg = (data.assets ?? []).find((a) => a.name?.toLowerCase().endsWith(".dmg"))
+      if (!data.tag_name || !dmg?.browser_download_url) return
+      const version = data.tag_name
+      const dmgUrl = dmg.browser_download_url
+      const base = dmgUrl.replace(/\/releases\/.*$/, "")
+      const setAll = (sel: string, apply: (el: HTMLElement) => void) =>
+        document.querySelectorAll<HTMLElement>(sel).forEach(apply)
+
+      setAll("[data-dl-href]", (el) => ((el as HTMLAnchorElement).href = dmgUrl))
+      setAll("[data-dl-sha]", (el) => ((el as HTMLAnchorElement).href = `${base}/releases/download/${version}/SHA256SUMS.txt`))
+      setAll("[data-dl-version]", (el) => (el.textContent = version))
+      if (typeof dmg.size === "number") {
+        const size = `${(dmg.size / 1048576).toFixed(1)} MB`
+        setAll("[data-dl-size]", (el) => (el.textContent = size))
+      }
+    })
+    .catch(() => {
+      /* offline / rate-limited — keep the build-time links */
+    })
+    .finally(() => window.clearTimeout(timer))
+}
+
 /* -------------------------------------------------------- nav on scroll */
 function initNav() {
   const nav = document.getElementById("nav")
@@ -200,3 +244,4 @@ initSparks()
 initTilt()
 initPullDemo()
 initNav()
+initLatestRelease()

@@ -10,9 +10,9 @@ export const allReleasesUrl = `${repoUrl}/releases`
 // Bump this pin when you cut a release, so offline/rate-limited builds still
 // point at a valid DMG. Online builds override it with the live latest.
 const FALLBACK = {
-  version: "v0.1.0",
-  dmgUrl: `${repoUrl}/releases/download/v0.1.0/ContainerUI-0.1.0.dmg`,
-  size: 2740088,
+  version: "v0.2.0",
+  dmgUrl: `${repoUrl}/releases/download/v0.2.0/ContainerUI-0.2.0.dmg`,
+  size: 2783113,
 }
 
 export type Release = {

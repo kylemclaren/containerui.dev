@@ -7,6 +7,7 @@ const caps = {
     "Watch live CPU, memory, and IP",
     "Inspect, then start, stop, restart, kill, or delete",
     "Stream logs and exec into a shell",
+    "Open a shell in your own terminal — one click",
     "Launch a new container from a full run form",
   ],
   images: [
@@ -146,6 +147,11 @@ const caps = {
     </div>
 
     <div class="more-grid" data-reveal>
+      <div class="more-card hairline">
+        <div class="more-ic"><Icon name="terminal" size={18} /></div>
+        <div class="more-h"><b>One-click console</b><span class="f-index">container exec -it</span></div>
+        <p>Drop into an interactive shell in your own terminal — Terminal, iTerm2, Ghostty, Warp, kitty, Alacritty, or WezTerm — straight from any running container.</p>
+      </div>
       <div class="more-card hairline">
         <div class="more-ic"><Icon name="volume" size={18} /></div>
         <div class="more-h"><b>Volumes</b><span class="f-index">container volume</span></div>

@@ -5,11 +5,11 @@ import { getRelease } from "@/lib/release"
 const { dmgUrl, version, dmgSize, shaUrl } = await getRelease()
 const commands = `brew install xcodegen
 xcodegen generate
-open ContainersUI.xcodeproj`
+open ContainerUI.xcodeproj`
 // set:html so the newlines survive Astro's compressHTML (literal markup newlines get stripped).
 const buildBlock = `<span class="c-prompt">$</span> brew install xcodegen<span class="c-comment">          # one-time</span>
-<span class="c-prompt">$</span> xcodegen generate<span class="c-comment">              # creates ContainersUI.xcodeproj</span>
-<span class="c-prompt">$</span> open ContainersUI.xcodeproj<span class="c-comment">    # then Run ⌘R in Xcode</span>`
+<span class="c-prompt">$</span> xcodegen generate<span class="c-comment">              # creates ContainerUI.xcodeproj</span>
+<span class="c-prompt">$</span> open ContainerUI.xcodeproj<span class="c-comment">     # then Run ⌘R in Xcode</span>`
 const containerReleases = "https://github.com/apple/container/releases"
 ---
 <section class="section" id="install">
@@ -28,13 +28,13 @@ const containerReleases = "https://github.com/apple/container/releases"
       <div class="dl-info">
         <span class="dl-badge"><BrandMark size={46} /></span>
         <div>
-          <div class="dl-title">ContainerUI <span class="mono">{version}</span></div>
-          <div class="dl-sub">Signed &amp; notarized · Apple silicon · macOS 26 · {dmgSize}</div>
+          <div class="dl-title">ContainerUI <span class="mono" data-dl-version>{version}</span></div>
+          <div class="dl-sub">Signed &amp; notarized · Apple silicon · macOS 26 · <span data-dl-size>{dmgSize}</span></div>
         </div>
       </div>
       <div class="dl-actions">
-        <a class="pill pill-accent" href={dmgUrl}><Icon name="download" size={18} /> Download .dmg</a>
-        <a class="dl-sha" href={shaUrl} target="_blank" rel="noopener"><Icon name="shield" size={14} /> SHA-256</a>
+        <a class="pill pill-accent" href={dmgUrl} data-dl-href><Icon name="download" size={18} /> Download .dmg</a>
+        <a class="dl-sha" href={shaUrl} target="_blank" rel="noopener" data-dl-sha><Icon name="shield" size={14} /> SHA-256</a>
       </div>
     </div>
 

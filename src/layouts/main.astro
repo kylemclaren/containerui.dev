@@ -9,7 +9,8 @@ const {
   title = "ContainerUI — a native Mac app for Apple's container tool",
   description = "ContainerUI is a native SwiftUI app for Apple's container command-line tool. Run and inspect Linux containers, browse images, and control the background service — all from one window.",
 } = Astro.props
-const site = "https://container-ui.dev"
+// One source of truth for absolute URLs: `site` in astro.config.mjs.
+const site = (Astro.site?.href ?? "https://container-ui.fly.dev/").replace(/\/$/, "")
 ---
 
 <!doctype html>
@@ -19,6 +20,7 @@ const site = "https://container-ui.dev"
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{title}</title>
     <meta name="description" content={description} />
+    <link rel="canonical" href={site} />
 
     <link rel="icon" type="image/png" sizes="128x128" href="/app-icon-128.png" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
