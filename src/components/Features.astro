@@ -1,0 +1,176 @@
+---
+import Icon from "./Icon.astro"
+
+const caps = {
+  containers: [
+    "List all containers, or just the running ones",
+    "Watch live CPU, memory, and IP",
+    "Inspect, then start, stop, restart, kill, or delete",
+    "Stream logs and exec into a shell",
+    "Launch a new container from a full run form",
+  ],
+  images: [
+    "List local images",
+    "Inspect config, env, layers, and platforms",
+    "Pull with streaming progress",
+    "Tag or delete an image",
+  ],
+  system: [
+    "Check service status and tool versions",
+    "Read disk usage",
+    "Start or stop the system service",
+    "Auto-detect the binary, or set a custom path",
+    "See a clear state when the tool isn't installed",
+  ],
+}
+---
+<section class="section" id="features">
+  <div class="wrap">
+    <div class="section-head" data-reveal>
+      <span class="eyebrow"><span class="dot"></span>Features</span>
+      <h2 class="h2">The whole toolset, one window</h2>
+      <p class="lede">Containers, images, volumes, networks, and the background service — each a first-class screen, with the actions you'd reach for and the touches that make it feel native.</p>
+    </div>
+
+    <!-- Containers -->
+    <div class="feature" data-reveal>
+      <div class="feature-copy">
+        <span class="f-index">container list</span>
+        <h3>Containers</h3>
+        <p class="tag">Every container, running or not, in one list.</p>
+        <ul class="caps">
+          {caps.containers.map((c) => (
+            <li class="cap"><span class="ck"><Icon name="check" /></span><span>{c}</span></li>
+          ))}
+        </ul>
+      </div>
+      <div class="mini hairline">
+        <div class="mini-head"><Icon name="cube" size={16} /><b>Containers</b><small>5 · 3 running</small></div>
+        <div class="row">
+          <div class="row-tile run"><Icon name="cube" /></div>
+          <div class="row-id"><div class="row-name">web-frontend</div><div class="row-img">nginx:1.27-alpine</div></div>
+          <span class="badge badge-run"><span class="dot dot-pulse"></span>running</span>
+        </div>
+        <div class="row" style="margin-top:8px">
+          <div class="row-tile run"><Icon name="cube" /></div>
+          <div class="row-id"><div class="row-name">api-gateway</div><div class="row-img">ghcr.io/acme/api:2.4.1</div></div>
+          <span class="badge badge-run"><span class="dot dot-pulse"></span>running</span>
+        </div>
+        <div class="row" style="margin-top:8px">
+          <div class="row-tile idle"><Icon name="cube" /></div>
+          <div class="row-id"><div class="row-name">redis-cache</div><div class="row-img">redis:7.4</div></div>
+          <span class="badge badge-idle"><span class="dot"></span>stopped</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Images -->
+    <div class="feature rev" data-reveal>
+      <div class="feature-copy">
+        <span class="f-index">container image</span>
+        <h3>Images</h3>
+        <p class="tag">Browse what you can run, and pull what you can't.</p>
+        <ul class="caps">
+          {caps.images.map((c) => (
+            <li class="cap"><span class="ck"><Icon name="check" /></span><span>{c}</span></li>
+          ))}
+        </ul>
+      </div>
+      <div class="mini hairline" data-pull-demo>
+        <div class="mini-head"><Icon name="image" size={16} /><b>Images</b><small>pull</small></div>
+        <div class="pull-box">
+          <div class="pull-top">
+            <span class="img-tile"><Icon name="download" size={14} /></span>
+            <span class="img-ref">redis:7.4</span>
+            <span class="pull-pct">0%</span>
+          </div>
+          <div class="pull-track"><div class="pull-fill"></div></div>
+        </div>
+        <div class="img-row">
+          <span class="img-tile"><Icon name="layers" /></span>
+          <span class="img-ref">nginx:1.27-alpine</span>
+          <span class="sz">72 MB</span>
+        </div>
+        <div class="img-row" style="margin-top:8px">
+          <span class="img-tile"><Icon name="layers" /></span>
+          <span class="img-ref">postgres:16</span>
+          <span class="sz">138 MB</span>
+        </div>
+        <div class="pull-new">
+          <div class="img-row">
+            <span class="img-tile" style="background:var(--run-soft);color:var(--run)"><Icon name="check" /></span>
+            <span class="img-ref">redis:7.4</span>
+            <span class="sz">41 MB</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- System -->
+    <div class="feature" data-reveal>
+      <div class="feature-copy">
+        <span class="f-index">container system</span>
+        <h3>System</h3>
+        <p class="tag">The background service, in plain view.</p>
+        <ul class="caps">
+          {caps.system.map((c) => (
+            <li class="cap"><span class="ck"><Icon name="check" /></span><span set:html={c.replace("binary", "<code>container</code> binary")} /></li>
+          ))}
+        </ul>
+      </div>
+      <div class="mini hairline">
+        <div class="mini-head"><Icon name="gear" size={16} /><b>System</b><small>healthy</small></div>
+        <div class="stat-hero" style="color:var(--run)">
+          <span class="dot dot-pulse" style="width:11px;height:11px"></span>
+          <span class="lbl" style="color:var(--text-1)"><b>Running</b><small>apiserver · launchd</small></span>
+          <span class="ver">container 0.5.0</span>
+        </div>
+        <div class="usage-grid">
+          <div class="usage-card">
+            <div class="uh"><Icon name="layers" /> Images</div>
+            <div class="usage-num">1.24 GB</div>
+            <div class="us">18 · 12 active</div>
+          </div>
+          <div class="usage-card">
+            <div class="uh"><Icon name="cube" /> Containers</div>
+            <div class="usage-num">384 MB</div>
+            <div class="us">5 · 3 active</div>
+          </div>
+          <div class="usage-card">
+            <div class="uh"><Icon name="disk" /> Volumes</div>
+            <div class="usage-num">96 MB</div>
+            <div class="us">4 total</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="more-grid" data-reveal>
+      <div class="more-card hairline">
+        <div class="more-ic"><Icon name="volume" size={18} /></div>
+        <div class="more-h"><b>Volumes</b><span class="f-index">container volume</span></div>
+        <p>List and inspect volumes, create them with a size and labels, then delete or prune the rest.</p>
+      </div>
+      <div class="more-card hairline">
+        <div class="more-ic"><Icon name="network" size={18} /></div>
+        <div class="more-h"><b>Networks</b><span class="f-index">container network</span></div>
+        <p>See networks with their subnets and gateways, and create, delete, or prune them.</p>
+      </div>
+      <div class="more-card hairline">
+        <div class="more-ic"><Icon name="command" size={18} /></div>
+        <div class="more-h"><b>Command palette</b><kbd>⌘K</kbd></div>
+        <p>Jump to any screen or fire an action without leaving the keyboard.</p>
+      </div>
+      <div class="more-card hairline">
+        <div class="more-ic"><Icon name="activity" size={18} /></div>
+        <div class="more-h"><b>Live charts</b></div>
+        <p>CPU and memory plotted in real time for every running container.</p>
+      </div>
+      <div class="more-card hairline">
+        <div class="more-ic"><Icon name="menubar" size={18} /></div>
+        <div class="more-h"><b>Menu bar</b></div>
+        <p>Backend status and quick controls, one click from the menu bar.</p>
+      </div>
+    </div>
+  </div>
+</section>

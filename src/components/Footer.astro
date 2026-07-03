@@ -1,0 +1,55 @@
+---
+import Icon from "./Icon.astro"
+import BrandMark from "./BrandMark.astro"
+import { getRelease } from "@/lib/release"
+const { repoUrl, dmgUrl, allReleasesUrl } = await getRelease()
+const appleContainer = "https://github.com/apple/container"
+const appleReleases = "https://github.com/apple/container/releases"
+---
+<section class="section" style="padding-bottom: 0">
+  <div class="wrap">
+    <div class="foot-cta hairline" data-reveal>
+      <span class="glow" aria-hidden="true"></span>
+      <span class="eyebrow"><span class="dot"></span>Free · open source</span>
+      <h2 class="h2" style="margin-top:14px">Run your containers from a native window</h2>
+      <div class="hero-cta">
+        <a class="pill pill-accent" href={dmgUrl}>
+          <Icon name="download" size={17} /> Download for macOS
+        </a>
+        <a class="pill pill-ghost" href={repoUrl} target="_blank" rel="noopener">
+          <Icon name="github" size={17} /> View on GitHub
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="foot">
+      <div class="foot-brand">
+        <a class="nav-logo" href="#top">
+          <BrandMark size={27} />
+          <span>ContainerUI</span>
+        </a>
+        <p>An independent, open-source project by kylemclaren. It complements the <code>container</code> tool, which is under active development, and is not affiliated with or endorsed by Apple.</p>
+      </div>
+      <div class="foot-col">
+        <h4>Project</h4>
+        <a href={dmgUrl}><Icon name="download" />Download for macOS</a>
+        <a href={repoUrl} target="_blank" rel="noopener"><Icon name="github" />Repository</a>
+        <a href={allReleasesUrl} target="_blank" rel="noopener"><Icon name="tag" />Releases</a>
+        <a href="#install"><Icon name="terminal" />Build from source</a>
+      </div>
+      <div class="foot-col">
+        <h4>The tool</h4>
+        <a href={appleContainer} target="_blank" rel="noopener"><Icon name="external" />apple/container</a>
+        <a href={appleReleases} target="_blank" rel="noopener"><Icon name="download" />container releases</a>
+      </div>
+    </div>
+    <div class="foot-legal">
+      <span>© 2026 · Built by kylemclaren</span>
+      <span>Not affiliated with or endorsed by Apple.</span>
+    </div>
+  </div>
+</footer>

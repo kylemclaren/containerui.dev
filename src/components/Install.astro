@@ -1,0 +1,80 @@
+---
+import Icon from "./Icon.astro"
+import BrandMark from "./BrandMark.astro"
+import { getRelease } from "@/lib/release"
+const { dmgUrl, version, dmgSize, shaUrl } = await getRelease()
+const commands = `brew install xcodegen
+xcodegen generate
+open ContainersUI.xcodeproj`
+// set:html so the newlines survive Astro's compressHTML (literal markup newlines get stripped).
+const buildBlock = `<span class="c-prompt">$</span> brew install xcodegen<span class="c-comment">          # one-time</span>
+<span class="c-prompt">$</span> xcodegen generate<span class="c-comment">              # creates ContainersUI.xcodeproj</span>
+<span class="c-prompt">$</span> open ContainersUI.xcodeproj<span class="c-comment">    # then Run ⌘R in Xcode</span>`
+const containerReleases = "https://github.com/apple/container/releases"
+---
+<section class="section" id="install">
+  <div class="wrap">
+    <div class="section-head" data-reveal>
+      <span class="eyebrow"><span class="dot"></span>Install</span>
+      <h2 class="h2">Download and run</h2>
+      <p class="lede">
+        Grab the signed, notarized DMG for the quickest start — or build from source with Xcode.
+        Either way you'll need macOS 26 on Apple silicon, the same as <code>container</code>. On macOS 14
+        the app still launches, straight to a clear "not installed" screen.
+      </p>
+    </div>
+
+    <div class="dl-card panel" data-reveal style="--reveal-delay:60ms">
+      <div class="dl-info">
+        <span class="dl-badge"><BrandMark size={46} /></span>
+        <div>
+          <div class="dl-title">ContainerUI <span class="mono">{version}</span></div>
+          <div class="dl-sub">Signed &amp; notarized · Apple silicon · macOS 26 · {dmgSize}</div>
+        </div>
+      </div>
+      <div class="dl-actions">
+        <a class="pill pill-accent" href={dmgUrl}><Icon name="download" size={18} /> Download .dmg</a>
+        <a class="dl-sha" href={shaUrl} target="_blank" rel="noopener"><Icon name="shield" size={14} /> SHA-256</a>
+      </div>
+    </div>
+
+    <div class="install-grid" data-reveal style="--reveal-delay:120ms">
+      <div>
+        <div class="build-label">Or build from source</div>
+        <div class="terminal">
+          <div class="terminal-bar">
+            <div class="lights"><i></i><i></i><i></i></div>
+            <span class="win-title mono">build</span>
+            <button class="term-copy" type="button" data-copy={commands} aria-label="Copy commands">
+              <Icon name="copy" class="i-copy" /><Icon name="check" class="i-check" />
+              <span>Copy</span>
+            </button>
+          </div>
+          <div class="terminal-body" set:html={buildBlock}></div>
+        </div>
+        <div class="req-row">
+          <span class="chip"><Icon name="apple" />macOS 26</span>
+          <span class="chip"><Icon name="cpu" />Apple silicon</span>
+          <span class="chip"><Icon name="terminal" />Xcode 16+</span>
+          <span class="chip"><Icon name="cube" />XcodeGen</span>
+        </div>
+      </div>
+
+      <div class="mini hairline ni">
+        <div class="ni-icon"><Icon name="cube" size={40} stroke-width={1.3} /></div>
+        <h3 class="h3">container isn't installed</h3>
+        <p>Couldn't find Apple's <code>container</code> command-line tool. Install it, then point the app at the binary.</p>
+        <div class="ni-searched">
+          <div class="l">Searched</div>
+          <div class="p">/usr/local/bin/container</div>
+          <div class="p">/opt/homebrew/bin/container</div>
+        </div>
+        <div class="ni-actions">
+          <span class="pill pill-accent pill-sm"><Icon name="download" size={15} />Choose binary…</span>
+          <span class="pill pill-ghost pill-sm"><Icon name="refresh" size={15} />Recheck</span>
+          <a class="pill pill-ghost pill-sm" href={containerReleases} target="_blank" rel="noopener">Download</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,45 @@
+---
+// The ContainerUI app icon, run through astro:assets so astro-aeo-image can
+// embed descriptive XMP/IPTC metadata (title, description, keywords, creator,
+// license) directly into the optimized file — self-describing for Google
+// Images and AI answer engines. Rendered decoratively (alt="") since it always
+// sits beside the "ContainerUI" wordmark; the semantics live in the file bytes.
+import { getImage } from "astro:assets"
+import appIcon from "@/assets/app-icon.png"
+
+interface Props {
+  size?: number
+  class?: string
+}
+const { size = 27, class: klass = "" } = Astro.props
+
+// Descriptive props are read by the aeo-image service (not standard <Image>
+// props), so pass them through getImage with a loose type and render a clean
+// <img> ourselves — no metadata leaks into the DOM as attributes.
+const opts = {
+  src: appIcon,
+  width: size * 2,
+  height: size * 2,
+  format: "png",
+  alt: "ContainerUI app icon",
+  title: "ContainerUI",
+  description:
+    "ContainerUI — a native macOS app for Apple's container command-line tool. Run and inspect Linux containers, browse images, and control the background service.",
+  keywords: [
+    "ContainerUI",
+    "Apple container",
+    "macOS",
+    "Linux containers",
+    "container CLI",
+    "SwiftUI",
+    "developer tools",
+  ],
+  creator: "kylemclaren",
+  copyrightNotice: "© 2026 kylemclaren",
+  rights: "Independent project, not affiliated with or endorsed by Apple.",
+  licenseUrl: "https://github.com/kylemclaren/container-ui",
+} as Parameters<typeof getImage>[0]
+
+const img = await getImage(opts)
+---
+<img src={img.src} width={size} height={size} alt="" class={klass} loading="lazy" decoding="async" />

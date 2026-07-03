@@ -1,0 +1,92 @@
+---
+import Icon from "./Icon.astro"
+import BrandMark from "./BrandMark.astro"
+
+// Sample fleet — mirrors the app's ContainerRow (name, image, IP, mem/cpu, state).
+// `cmd` is the exact `container` subcommand that GUI action maps to: the seam.
+const rows = [
+  { name: "web-frontend", image: "nginx:1.27-alpine", state: "run", ip: "192.168.64.3", meta: "48.2 MB", metaIcon: "memory", cmd: "container stop web-frontend" },
+  { name: "api-gateway", image: "ghcr.io/acme/api:2.4.1", state: "run", ip: "192.168.64.4", meta: "132 MB", metaIcon: "memory", cmd: "container logs -f api-gateway" },
+  { name: "postgres-main", image: "postgres:16", state: "run", ip: "192.168.64.5", meta: "512 MB", metaIcon: "memory", sel: true, spark: true, cmd: "container inspect postgres-main" },
+  { name: "redis-cache", image: "redis:7.4", state: "idle", ip: null, meta: "2 cpu", metaIcon: "cpu", cmd: "container start redis-cache" },
+  { name: "worker-batch", image: "ghcr.io/acme/worker:latest", state: "idle", ip: null, meta: "4 cpu", metaIcon: "cpu", cmd: "container start worker-batch" },
+]
+---
+<div class="device">
+  <div class="window" id="hero-window" data-tilt>
+    <div class="win-bar">
+      <div class="lights"><i></i><i></i><i></i></div>
+      <span class="win-title">ContainerUI</span>
+    </div>
+
+    <div class="win-body">
+      <div class="win-sidebar">
+        <div class="brand">
+          <BrandMark size={24} />
+          <span>ContainerUI</span>
+        </div>
+        <div class="nav-item active"><Icon name="cube" /> Containers</div>
+        <div class="nav-item"><Icon name="image" /> Images</div>
+        <div class="nav-item"><Icon name="volume" /> Volumes</div>
+        <div class="nav-item"><Icon name="network" /> Networks</div>
+        <div class="nav-item"><Icon name="gear" /> System</div>
+        <div class="backend" style="color: var(--run)">
+          <span class="dot dot-pulse"></span>
+          <span style="color: var(--text-1)">Running</span>
+          <span class="chevn"><Icon name="chevron" /></span>
+        </div>
+      </div>
+
+      <div class="win-main">
+        <div class="toolbar">
+          <div class="toolbar-title">
+            <b>Containers</b>
+            <small id="hero-sub">5 containers · 3 running</small>
+          </div>
+          <div class="field"><Icon name="search" /><span>Search containers</span></div>
+          <div class="seg" role="group" aria-label="Filter containers">
+            <button class="seg-btn on" id="seg-all" type="button" aria-pressed="true">All</button>
+            <button class="seg-btn" id="seg-running" type="button" aria-pressed="false">Running</button>
+          </div>
+          <div class="icon-btn" aria-hidden="true"><Icon name="refresh" /></div>
+          <div class="run-btn"><Icon name="play" /> Run</div>
+        </div>
+
+        <div class="rows" id="hero-rows">
+          {rows.map((r) => (
+            <div class={`row${r.sel ? " sel" : ""}`} data-state={r.state}>
+              <div class={`row-tile ${r.state}`}><Icon name="cube" /></div>
+              <div class="row-id">
+                <div class="row-name">{r.name}</div>
+                <div class="row-img">{r.image}</div>
+              </div>
+              <div class="row-meta">
+                {r.ip && <span class="chip"><Icon name="network" />{r.ip}</span>}
+                {r.spark ? (
+                  <span class="chip">
+                    <svg class="spark" viewBox="0 0 62 20" data-spark preserveAspectRatio="none"><path d=""></path></svg>
+                    12%
+                  </span>
+                ) : (
+                  <span class="chip"><Icon name={r.metaIcon} />{r.meta}</span>
+                )}
+              </div>
+              {r.state === "run" ? (
+                <span class="badge badge-run"><span class="dot dot-pulse"></span>running</span>
+              ) : (
+                <span class="badge badge-idle"><span class="dot"></span>stopped</span>
+              )}
+              <span class="row-cmd"><span class="p">$</span>{r.cmd}</span>
+            </div>
+          ))}
+        </div>
+
+        <div class="seam">
+          <span class="p">$</span>
+          <span class="seam-cmd" id="hero-seam">container list <span class="fl">--all --format json</span><span class="caret"></span></span>
+          <span class="seam-tag"><span class="dot"></span>decoded</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

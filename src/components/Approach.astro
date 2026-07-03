@@ -1,0 +1,66 @@
+---
+import Icon from "./Icon.astro"
+
+// Rendered via set:html because raw JSON braces collide with Astro expressions.
+const jsonBlock = `<span class="c-prompt">$</span> container list <span class="c-flag">--format json</span>
+<span class="c-out">[
+  {</span>
+    <span class="c-out">"status":</span> "running",
+    <span class="c-out">"configuration":</span> {
+      <span class="c-out">"id":</span> "postgres-main",
+      <span class="c-out">"image":</span> { "reference": "postgres:16" },
+      <span class="c-out">"resources":</span> { "cpus": 2, "memoryInBytes": 536870912 }
+    },
+    <span class="c-out">"networks":</span> [{ "address": "192.168.64.5/24" }]
+<span class="c-out">  }
+]</span>`
+---
+<section class="section" id="approach">
+  <div class="wrap">
+    <div class="section-head" data-reveal>
+      <span class="eyebrow"><span class="dot"></span>Approach</span>
+      <h2 class="h2">A thin layer over the CLI</h2>
+      <p class="lede">
+        ContainerUI doesn't reimplement anything. It shells out to the supported
+        <code>container</code> CLI and decodes its <code>--format json</code> output — so it
+        tracks the documented command surface, not private APIs, and keeps working across
+        <code>container</code> releases instead of breaking on internal changes.
+      </p>
+    </div>
+
+    <div class="seam-demo" data-reveal style="--reveal-delay:80ms">
+      <div class="terminal">
+        <div class="terminal-bar">
+          <div class="lights"><i></i><i></i><i></i></div>
+          <span class="win-title mono">zsh — container</span>
+        </div>
+        <div class="terminal-body" set:html={jsonBlock}></div>
+      </div>
+
+      <div class="decode-arrow" aria-hidden="true">
+        <span class="ring"><Icon name="arrow" size={20} /></span>
+        <span>decode</span>
+      </div>
+
+      <div class="dec-card hairline glass">
+        <div class="dec-label">Containers</div>
+        <div class="row sel">
+          <div class="row-tile run"><Icon name="cube" /></div>
+          <div class="row-id">
+            <div class="row-name">postgres-main</div>
+            <div class="row-img">postgres:16</div>
+          </div>
+          <span class="badge badge-run"><span class="dot dot-pulse"></span>running</span>
+        </div>
+        <div class="row" style="margin-top:8px">
+          <div class="row-tile run"><Icon name="cube" /></div>
+          <div class="row-id">
+            <div class="row-name" style="width:5.5rem;height:9px;border-radius:4px;background:var(--control)"></div>
+            <div class="row-img" style="width:7.5rem;height:8px;border-radius:4px;background:var(--control);margin-top:6px"></div>
+          </div>
+          <span class="badge badge-run"><span class="dot dot-pulse"></span>running</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

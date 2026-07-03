@@ -1,0 +1,32 @@
+---
+import Icon from "./Icon.astro"
+import BrandMark from "./BrandMark.astro"
+import { getRelease } from "@/lib/release"
+const { repoUrl, dmgUrl } = await getRelease()
+---
+<header class="nav" id="nav">
+  <div class="wrap nav-inner">
+    <a class="nav-logo" href="#top" aria-label="ContainerUI — home">
+      <BrandMark size={27} />
+      <span>ContainerUI</span>
+    </a>
+    <nav class="nav-links" aria-label="Primary">
+      <a class="nav-link" href="#approach">Approach</a>
+      <a class="nav-link" href="#features">Features</a>
+      <a class="nav-link" href="#architecture">Architecture</a>
+      <a class="nav-link" href="#install">Install</a>
+    </nav>
+    <div class="nav-right">
+      <button class="theme-toggle" id="theme-toggle" type="button" aria-label="Switch appearance">
+        <Icon name="sun" size={18} class="i-sun" />
+        <Icon name="moon" size={18} class="i-moon" />
+      </button>
+      <a class="pill pill-ghost pill-sm nav-gh" href={repoUrl} target="_blank" rel="noopener" aria-label="View on GitHub">
+        <Icon name="github" size={16} /> <span class="nav-gh-label">GitHub</span>
+      </a>
+      <a class="pill pill-accent pill-sm" href={dmgUrl}>
+        <Icon name="download" size={16} /> Download
+      </a>
+    </div>
+  </div>
+</header>

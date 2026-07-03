@@ -1,0 +1,65 @@
+---
+import Icon from "./Icon.astro"
+
+const nodes = [
+  { k: "SwiftUI views", d: "Features/", cli: false },
+  { k: "ViewModels", d: "@Observable", cli: false },
+  { k: "Services", d: "build exact argv", cli: false },
+  { k: "ContainerCLI", d: "resolve · decode json", cli: true },
+  { k: "CommandRunner", d: "Process", cli: true },
+]
+const tested = ["JSON decoding", "exact argv", "error classification", "formatting"]
+---
+<section class="section" id="architecture">
+  <div class="wrap">
+    <div class="section-head" data-reveal>
+      <span class="eyebrow"><span class="dot"></span>Architecture</span>
+      <h2 class="h2">One small, testable seam</h2>
+      <p class="lede">
+        Every action follows one path. Views observe view models, which call services that
+        build exact commands through <code>ContainerCLI</code>, <code>CommandRunner</code>, and
+        <code>Process</code>. Swap in a mock at that seam and the whole app is testable without a backend.
+      </p>
+    </div>
+
+    <div class="panel" data-reveal style="padding: clamp(20px, 3.4vw, 32px); --reveal-delay:80ms">
+      <div class="flow">
+        {nodes.map((n, i) => (
+          <Fragment>
+            <div class={`flow-node${n.cli ? " cli" : ""}`}>
+              <div class="k">{n.k}</div>
+              <div class="d">{n.d}</div>
+            </div>
+            {i < nodes.length - 1 && <div class="flow-arrow"><Icon name="arrow" /></div>}
+          </Fragment>
+        ))}
+      </div>
+      <div class="flow-branch">
+        <Icon name="shield" size={17} class="mono" />
+        <span><span class="k" style="color:var(--brand-2)">MockCommandRunner</span> replays recorded CLI JSON in tests — no live backend, no window to launch.</span>
+      </div>
+    </div>
+
+    <div class="arch-notes" data-reveal style="--reveal-delay:120ms">
+      <div class="panel arch-note">
+        <h3 class="h3">Why shell out to the CLI?</h3>
+        <p>
+          The <code>container</code> project's Swift packages are API-stable only within a patch
+          version, and talking to its XPC apiserver directly needs matching entitlements and tracks
+          internal changes. The CLI is the documented, stable surface, and almost every read command
+          supports <code>--format json</code>. So the app calls the CLI.
+        </p>
+      </div>
+      <div class="panel arch-note">
+        <h3 class="h3">Tested at the seam</h3>
+        <p>
+          Host-less logic tests compile the UI-independent core and exercise it with a mock runner and
+          recorded fixtures — fast, headless, and honest about the exact commands it builds.
+        </p>
+        <div class="cch">
+          {tested.map((t) => <span class="chip"><Icon name="check" size={13} />{t}</span>)}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
