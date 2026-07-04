@@ -16,6 +16,12 @@ const caps = {
     "Pull with streaming progress",
     "Tag or delete an image",
   ],
+  explore: [
+    "Search Docker Hub by name, instantly",
+    "Stars, pulls, and official badges at a glance",
+    "Browse a repo's tags — sizes, platforms, dates",
+    "Pull any tag straight into your images",
+  ],
   system: [
     "Check service status and tool versions",
     "Read disk usage",
@@ -30,7 +36,7 @@ const caps = {
     <div class="section-head" data-reveal>
       <span class="eyebrow"><span class="dot"></span>Features</span>
       <h2 class="h2">The whole toolset, one window</h2>
-      <p class="lede">Containers, images, volumes, networks, and the background service — each a first-class screen, with the actions you'd reach for and the touches that make it feel native.</p>
+      <p class="lede">Containers, images, Docker Hub search, volumes, networks, and the background service — each a first-class screen, with the actions you'd reach for and the touches that make it feel native.</p>
     </div>
 
     <!-- Containers -->
@@ -107,8 +113,47 @@ const caps = {
       </div>
     </div>
 
-    <!-- System -->
+    <!-- Explore / Docker Hub -->
     <div class="feature" data-reveal>
+      <div class="feature-copy">
+        <span class="f-index">hub.docker.com</span>
+        <h3>Explore</h3>
+        <p class="tag">Search Docker Hub and pull without leaving the app.</p>
+        <ul class="caps">
+          {caps.explore.map((c) => (
+            <li class="cap"><span class="ck"><Icon name="check" /></span><span>{c}</span></li>
+          ))}
+        </ul>
+      </div>
+      <div class="mini hairline">
+        <div class="mini-head"><Icon name="search" size={16} /><b>Explore</b><small>docker hub</small></div>
+        <div class="hub-search">
+          <Icon name="search" size={14} />
+          <span class="hub-q">postgres</span>
+          <span class="hub-caret"></span>
+        </div>
+        <div class="hub-list">
+          <div class="img-row">
+            <span class="img-tile"><Icon name="layers" /></span>
+            <span class="hub-name"><span class="img-ref">postgres</span><span class="hub-badge">official</span></span>
+            <span class="hub-meta"><span class="hub-chip"><Icon name="star" size={12} />15K</span><span class="hub-chip"><Icon name="download" size={12} />1B+</span></span>
+          </div>
+          <div class="img-row">
+            <span class="img-tile"><Icon name="layers" /></span>
+            <span class="hub-name"><span class="img-ref">bitnami/postgresql</span></span>
+            <span class="hub-meta"><span class="hub-chip"><Icon name="star" size={12} />1.1K</span><span class="hub-chip"><Icon name="download" size={12} />500M+</span></span>
+          </div>
+          <div class="img-row">
+            <span class="img-tile"><Icon name="layers" /></span>
+            <span class="hub-name"><span class="img-ref">timescale/timescaledb</span></span>
+            <span class="hub-meta"><span class="hub-chip"><Icon name="star" size={12} />420</span><span class="hub-chip"><Icon name="download" size={12} />90M+</span></span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- System -->
+    <div class="feature rev" data-reveal>
       <div class="feature-copy">
         <span class="f-index">container system</span>
         <h3>System</h3>

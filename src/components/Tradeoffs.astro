@@ -1,0 +1,60 @@
+---
+import Icon from "./Icon.astro"
+
+// yes / no render as marks; any other string renders as a literal value.
+const rows = [
+  { f: "Live CPU / memory charts", us: "yes", orc: "no" },
+  { f: "⌘K command palette", us: "yes", orc: "per-tab" },
+  { f: "Live log streaming", us: "yes", orc: "2s poll" },
+  { f: "Build from a Dockerfile", us: "yes", orc: "no" },
+  { f: "Talks to <code>container</code> via", us: "the CLI", orc: "XPC + packages" },
+  { f: "App footprint", us: "Foundation · Process", orc: "gRPC · NIO · protobuf" },
+  { f: "One-click shell (exec)", us: "yes", orc: "yes" },
+  { f: "Menu-bar controls", us: "yes", orc: "yes" },
+  { f: "Auto-update", us: "yes", orc: "yes" },
+  { f: "Docker Hub image search", us: "yes", orc: "yes" },
+  { f: "DNS domain management", us: "no", orc: "yes" },
+  { f: "Multi-container log panes", us: "no", orc: "yes" },
+]
+---
+<section class="section" id="compare">
+  <div class="wrap">
+    <div class="section-head" data-reveal>
+      <span class="eyebrow"><span class="dot"></span>Compare</span>
+      <h2 class="h2">ContainerUI vs Orchard</h2>
+      <p class="lede">
+        Both are native, open-source Mac apps for Apple's <code>container</code>. Here's how they line
+        up — ContainerUI leans on the thin CLI layer; Orchard links the Swift packages and talks to the
+        apiserver directly.
+      </p>
+    </div>
+
+    <div class="cmp" data-reveal style="--reveal-delay:80ms" role="table" aria-label="ContainerUI compared with Orchard">
+      <div class="cmp-row cmp-head" role="row">
+        <div class="cmp-feat" role="columnheader">Feature</div>
+        <div class="cmp-cell cmp-us" role="columnheader">ContainerUI</div>
+        <div class="cmp-cell" role="columnheader">Orchard</div>
+      </div>
+      {rows.map((r) => (
+        <div class="cmp-row" role="row">
+          <div class="cmp-feat" role="cell" set:html={r.f}></div>
+          <div class="cmp-cell cmp-us" role="cell">
+            {r.us === "yes" ? <span class="c-yes"><Icon name="check" size={13} /></span>
+              : r.us === "no" ? <span class="c-no" aria-label="no"></span>
+              : <span class="c-val">{r.us}</span>}
+          </div>
+          <div class="cmp-cell" role="cell">
+            {r.orc === "yes" ? <span class="c-yes"><Icon name="check" size={13} /></span>
+              : r.orc === "no" ? <span class="c-no" aria-label="no"></span>
+              : <span class="c-val">{r.orc}</span>}
+          </div>
+        </div>
+      ))}
+    </div>
+
+    <p class="cmp-note" data-reveal style="--reveal-delay:140ms">
+      Orchard is a well-built app with more breadth today. ContainerUI's bet is the documented CLI —
+      the surface Apple keeps stable across releases — for a smaller, faster app that tracks the tool as it ships.
+    </p>
+  </div>
+</section>
