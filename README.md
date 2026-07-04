@@ -6,7 +6,7 @@ for Apple's [`container`](https://github.com/apple/container) tool.
 
 The download links resolve to the **latest release DMG at build time**
 (`src/lib/release.ts`, via the GitHub Releases API, with a pinned fallback) — so a
-redeploy always points at the newest signed build. Bump the fallback pin when cutting
+redeploy always points at the newest release build. Bump the fallback pin when cutting
 a release for offline/rate-limited builds.
 
 Built with **Astro + Tailwind v4**. The design is macOS-26 "Liquid Glass": the page

@@ -46,6 +46,15 @@ const site = (Astro.site?.href ?? "https://container-ui.fly.dev/").replace(/\/$/
       // Mark JS available so scroll-reveal can hide-then-reveal. Without this
       // flag the page renders fully (no blank-page-on-JS-failure).
       document.documentElement.classList.add("js")
+      // ContainerUI is a macOS-only app, so the Download CTA is meaningless on a
+      // phone/tablet. Flag mobile agents before paint (no flicker) so CSS can
+      // hide it. UA Client Hints where available, UA-string sniff as fallback.
+      try {
+        var isMobile =
+          (navigator.userAgentData && navigator.userAgentData.mobile) ||
+          /Android|iPhone|iPod|iPad|IEMobile|Opera Mini|Mobile|Windows Phone/i.test(navigator.userAgent)
+        if (isMobile) document.documentElement.classList.add("is-mobile")
+      } catch (_) {}
       // No-flash appearance: explicit choice wins, else follow the OS. Dark is home.
       try {
         const saved = localStorage.getItem("theme")

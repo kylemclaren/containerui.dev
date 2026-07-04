@@ -14,6 +14,7 @@ const { repoUrl, dmgUrl } = await getRelease()
       <a class="nav-link" href="#approach">Approach</a>
       <a class="nav-link" href="#features">Features</a>
       <a class="nav-link" href="#architecture">Architecture</a>
+      <a class="nav-link" href="#compare">Compare</a>
       <a class="nav-link" href="#install">Install</a>
     </nav>
     <div class="nav-right">
@@ -24,7 +25,7 @@ const { repoUrl, dmgUrl } = await getRelease()
       <a class="pill pill-ghost pill-sm nav-gh" href={repoUrl} target="_blank" rel="noopener" aria-label="View on GitHub">
         <Icon name="github" size={16} /> <span class="nav-gh-label">GitHub</span>
       </a>
-      <a class="pill pill-accent pill-sm" href={dmgUrl}>
+      <a class="pill pill-accent pill-sm nav-dl" href={dmgUrl}>
         <Icon name="download" size={16} /> Download
       </a>
     </div>
