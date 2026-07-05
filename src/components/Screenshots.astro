@@ -14,6 +14,8 @@ import networksDark from "@/assets/screens/networks-dark.webp"
 import networksLight from "@/assets/screens/networks-light.webp"
 import systemDark from "@/assets/screens/system-dark.webp"
 import systemLight from "@/assets/screens/system-light.webp"
+import commandDark from "@/assets/screens/command-dark.webp"
+import commandLight from "@/assets/screens/command-light.webp"
 
 // The app's sidebar as a segmented control. Explore — the Docker Hub search —
 // leads, so it's index 0: default-selected, badged. Each surface ships a light
@@ -30,6 +32,15 @@ const surfaces = [
     dark: exploreDark,
     light: exploreLight,
     alt: "ContainerUI's Explore screen searching Docker Hub, listing repositories with stars, pulls, and official badges.",
+  },
+  {
+    id: "command",
+    label: "Command",
+    icon: "command",
+    cmd: "⌘K",
+    dark: commandDark,
+    light: commandLight,
+    alt: "ContainerUI's command palette, opened with ⌘K, listing quick actions like run a container, pull an image, and search Docker Hub.",
   },
   {
     id: "containers",
@@ -85,11 +96,10 @@ const SHOT_WIDTHS = [720, 1080, 1440, 2144]
   <div class="wrap">
     <div class="section-head" data-reveal>
       <span class="eyebrow"><span class="dot"></span>Screenshots</span>
-      <h2 class="h2">Every surface, the real thing</h2>
+      <h2 class="h2">Every surface</h2>
       <p class="lede">
-        Not mockups — the actual app. Pick a surface; it swaps in at full
-        fidelity, in your appearance. Starting with Explore, the new Docker Hub
-        search.
+        Containers, images, volumes, networks, and system — plus Explore, the
+        new Docker Hub search, and the ⌘K command palette.
       </p>
     </div>
 
