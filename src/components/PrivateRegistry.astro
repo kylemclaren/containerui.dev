@@ -1,0 +1,79 @@
+---
+import Icon from "./Icon.astro"
+
+// The registry feature's signature moment: you go to pull a private image, the
+// app notices you're not signed in to that registry, and the login is one click
+// away — shown as a two-card flow (log in → pull) mirroring the real app.
+const caps = [
+  "Sign in to ghcr.io, Amazon ECR, Google Artifact Registry, or a registry you host",
+  "Pull private images with the same streaming progress as any other",
+  "A heads-up the moment you pull from a registry you're not signed in to",
+  "Your token goes straight to the container tool over stdin — the app never writes it to disk",
+]
+---
+<section class="section" id="registries">
+  <div class="wrap">
+    <div class="section-head" data-reveal>
+      <span class="eyebrow"><span class="dot"></span>New · Private registries</span>
+      <h2 class="h2">Bring your private images in</h2>
+      <p class="lede">
+        Sign in to your private registries, then pull from them like anything else.
+        When you reach for an image on a registry you haven't signed in to,
+        ContainerUI catches it — and puts the login one click away.
+      </p>
+    </div>
+
+    <div class="reg-stage" data-reveal style="--reveal-delay:80ms">
+      <div class="reg-glow" aria-hidden="true"></div>
+
+      <!-- Log in to a registry -->
+      <div class="mini reg-card">
+        <div class="mini-head"><Icon name="shield" size={16} /><b>Log in to registry</b><small>registry login</small></div>
+        <div class="reg-form">
+          <label class="reg-field"><span class="reg-k">Server</span><span class="reg-input mono">ghcr.io</span></label>
+          <label class="reg-field"><span class="reg-k">Username</span><span class="reg-input mono">acme-ci</span></label>
+          <label class="reg-field"><span class="reg-k">Token</span><span class="reg-input reg-secure">••••••••••••••</span></label>
+          <div class="reg-field">
+            <span class="reg-k">Scheme</span>
+            <span class="seg reg-seg"><span class="seg-btn on">Auto</span><span class="seg-btn">HTTPS</span><span class="seg-btn">HTTP</span></span>
+          </div>
+          <div class="reg-go"><Icon name="shield" size={13} />Log in</div>
+        </div>
+      </div>
+
+      <!-- flow connector -->
+      <div class="reg-arrow" aria-hidden="true">
+        <span class="ring"><Icon name="arrow" size={20} /></span>
+        <span>then pull</span>
+      </div>
+
+      <!-- Pull, with the registry-aware nudge -->
+      <div class="mini reg-card">
+        <div class="mini-head"><Icon name="download" size={16} /><b>Pull an image</b><small>image pull</small></div>
+        <div class="reg-ref reg-ok">
+          <Icon name="layers" size={14} />
+          <span class="mono">nginx:1.27-alpine</span>
+          <span class="reg-ok-tag"><Icon name="check" size={12} />public</span>
+        </div>
+        <div class="reg-ref">
+          <Icon name="layers" size={14} />
+          <span class="mono">ghcr.io/acme/api:2.4.1</span>
+        </div>
+        <div class="reg-hint">
+          <span class="reg-hint-ic"><Icon name="shield" size={13} /></span>
+          <span class="reg-hint-txt">
+            <b>Not signed in to ghcr.io</b>
+            <small>Public images still pull — sign in for private.</small>
+          </span>
+          <span class="reg-hint-go">Log in</span>
+        </div>
+      </div>
+    </div>
+
+    <ul class="reg-caps" data-reveal style="--reveal-delay:120ms">
+      {caps.map((c) => (
+        <li class="cap"><span class="ck"><Icon name="check" /></span><span>{c}</span></li>
+      ))}
+    </ul>
+  </div>
+</section>
