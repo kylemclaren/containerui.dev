@@ -1,0 +1,152 @@
+---
+import { Image } from "astro:assets"
+import Icon from "./Icon.astro"
+
+import containersDark from "@/assets/screens/containers-dark.webp"
+import containersLight from "@/assets/screens/containers-light.webp"
+import imagesDark from "@/assets/screens/images-dark.webp"
+import imagesLight from "@/assets/screens/images-light.webp"
+import exploreDark from "@/assets/screens/explore-dark.webp"
+import exploreLight from "@/assets/screens/explore-light.webp"
+import volumesDark from "@/assets/screens/volumes-dark.webp"
+import volumesLight from "@/assets/screens/volumes-light.webp"
+import networksDark from "@/assets/screens/networks-dark.webp"
+import networksLight from "@/assets/screens/networks-light.webp"
+import systemDark from "@/assets/screens/system-dark.webp"
+import systemLight from "@/assets/screens/system-light.webp"
+
+// The app's sidebar as a segmented control. Explore — the Docker Hub search —
+// leads, so it's index 0: default-selected, badged. Each surface ships a light
+// and a dark shot; both go in the DOM and CSS shows the one matching the theme,
+// exactly like the nav's sun/moon swap. Shots already carry their own window
+// chrome + shadow on transparent bg, so no fake chrome — just float them.
+const surfaces = [
+  {
+    id: "explore",
+    label: "Explore",
+    icon: "search",
+    cmd: "search docker hub",
+    featured: true,
+    dark: exploreDark,
+    light: exploreLight,
+    alt: "ContainerUI's Explore screen searching Docker Hub, listing repositories with stars, pulls, and official badges.",
+  },
+  {
+    id: "containers",
+    label: "Containers",
+    icon: "cube",
+    cmd: "container list",
+    dark: containersDark,
+    light: containersLight,
+    alt: "ContainerUI's Containers screen listing running and stopped containers with live CPU, memory, and IP.",
+  },
+  {
+    id: "images",
+    label: "Images",
+    icon: "image",
+    cmd: "container image",
+    dark: imagesDark,
+    light: imagesLight,
+    alt: "ContainerUI's Images screen listing local images with sizes, ready to inspect, tag, pull, or delete.",
+  },
+  {
+    id: "volumes",
+    label: "Volumes",
+    icon: "volume",
+    cmd: "container volume",
+    dark: volumesDark,
+    light: volumesLight,
+    alt: "ContainerUI's Volumes screen listing volumes with their sizes and labels.",
+  },
+  {
+    id: "networks",
+    label: "Networks",
+    icon: "network",
+    cmd: "container network",
+    dark: networksDark,
+    light: networksLight,
+    alt: "ContainerUI's Networks screen listing networks with their subnets and gateways.",
+  },
+  {
+    id: "system",
+    label: "System",
+    icon: "gear",
+    cmd: "container system",
+    dark: systemDark,
+    light: systemLight,
+    alt: "ContainerUI's System screen showing service status, tool versions, and disk usage.",
+  },
+]
+
+const SHOT_SIZES = "(max-width: 1120px) calc(100vw - 48px), 1072px"
+const SHOT_WIDTHS = [720, 1080, 1440, 2144]
+---
+<section class="section" id="screenshots">
+  <div class="wrap">
+    <div class="section-head" data-reveal>
+      <span class="eyebrow"><span class="dot"></span>Screenshots</span>
+      <h2 class="h2">Every surface, the real thing</h2>
+      <p class="lede">
+        Not mockups — the actual app. Pick a surface; it swaps in at full
+        fidelity, in your appearance. Starting with Explore, the new Docker Hub
+        search.
+      </p>
+    </div>
+
+    <div class="shots" data-reveal style="--reveal-delay:80ms">
+      <div class="seg shots-tabs" role="tablist" aria-label="App screenshots">
+        {surfaces.map((s, i) => (
+          <button
+            class={`seg-btn shot-tab${i === 0 ? " on" : ""}`}
+            id={`shot-tab-${s.id}`}
+            type="button"
+            role="tab"
+            data-shot={s.id}
+            aria-selected={i === 0 ? "true" : "false"}
+            aria-controls={`shot-panel-${s.id}`}
+            tabindex={i === 0 ? 0 : -1}
+          >
+            <Icon name={s.icon} />
+            {s.label}
+            {s.featured && <span class="shot-new">New</span>}
+          </button>
+        ))}
+      </div>
+
+      <div class="shots-stage">
+        <div class="shots-glow" aria-hidden="true"></div>
+        {surfaces.map((s, i) => (
+          <div
+            class={`shots-panel${i === 0 ? " on" : ""}`}
+            id={`shot-panel-${s.id}`}
+            role="tabpanel"
+            data-shot={s.id}
+            aria-labelledby={`shot-tab-${s.id}`}
+            tabindex={0}
+            hidden={i !== 0}
+          >
+            <Image
+              src={s.dark}
+              alt={s.alt}
+              class="shot-img shot-dark"
+              widths={SHOT_WIDTHS}
+              sizes={SHOT_SIZES}
+              loading="lazy"
+              decoding="async"
+            />
+            <Image
+              src={s.light}
+              alt={s.alt}
+              class="shot-img shot-light"
+              widths={SHOT_WIDTHS}
+              sizes={SHOT_SIZES}
+              loading="lazy"
+              decoding="async"
+            />
+            <p class="mock-caption">{s.label} · <code>{s.cmd}</code></p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </div>
+</section>

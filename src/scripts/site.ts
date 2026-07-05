@@ -236,6 +236,43 @@ function initNav() {
   window.addEventListener("scroll", onScroll, { passive: true })
 }
 
+/* --------------------------------------------------- screenshots tabs */
+// The gallery is the app's sidebar as a segmented control: pick a surface and
+// its shot swaps in. Light/dark variants are both in the DOM — CSS shows the
+// one matching the theme — so this only toggles which SURFACE is live.
+function initScreens() {
+  const tabs = Array.from(document.querySelectorAll<HTMLButtonElement>(".shot-tab"))
+  const panels = Array.from(document.querySelectorAll<HTMLElement>(".shots-panel"))
+  if (!tabs.length || !panels.length) return
+
+  const select = (id: string) => {
+    tabs.forEach((t) => {
+      const on = t.dataset.shot === id
+      t.classList.toggle("on", on)
+      t.setAttribute("aria-selected", String(on))
+      t.tabIndex = on ? 0 : -1
+    })
+    panels.forEach((p) => {
+      const on = p.dataset.shot === id
+      p.classList.toggle("on", on)
+      p.hidden = !on
+    })
+  }
+
+  tabs.forEach((t, i) => {
+    t.addEventListener("click", () => select(t.dataset.shot || ""))
+    // Roving tabindex + arrow keys, per the ARIA tabs pattern.
+    t.addEventListener("keydown", (e) => {
+      const d = e.key === "ArrowRight" ? 1 : e.key === "ArrowLeft" ? -1 : 0
+      if (!d) return
+      e.preventDefault()
+      const next = tabs[(i + d + tabs.length) % tabs.length]
+      select(next.dataset.shot || "")
+      next.focus()
+    })
+  })
+}
+
 initTheme()
 initReveal()
 initCopy()
@@ -244,4 +281,5 @@ initSparks()
 initTilt()
 initPullDemo()
 initNav()
+initScreens()
 initLatestRelease()

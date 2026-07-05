@@ -1630,3 +1630,91 @@ span.pill:active { transform: none; }
   .cmp-feat, .cmp-cell { padding: 11px 12px; font-size: 0.86rem; }
   .c-val { font-size: 0.74rem; }
 }
+
+/* =========================================================================
+   Screenshots — the app's surfaces in one large viewer. Tabs are the app's
+   own sidebar as a segmented control; each surface has a light + dark shot
+   and CSS shows the one matching the active theme (same swap as the nav's
+   sun/moon). The shots ship with their own window chrome + shadow on a
+   transparent bg, so we frame them lightly — a soft lamp of the icon's light
+   behind, never fake chrome around.
+   ========================================================================= */
+.shots { margin-top: 8px; }
+
+/* Segmented tab bar — the app's control, roomier. Centres, and on narrow
+   screens scrolls instead of forcing page overflow. */
+.shots-tabs {
+  gap: 3px;
+  padding: 4px;
+  border-radius: 12px;
+  max-width: max-content;
+  margin-inline: auto;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.shots-tabs::-webkit-scrollbar { display: none; }
+
+.shot-tab {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  flex: none;
+  padding: 7px 13px;
+  font-size: 12.5px;
+  white-space: nowrap;
+}
+.shot-tab svg { width: 14px; height: 14px; opacity: 0.8; }
+.shot-tab.on svg { opacity: 1; color: var(--brand-1); }
+
+/* Headline feature — a quiet mono chip on the Explore tab */
+.shot-new {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  padding: 1px 6px;
+  border-radius: 6px;
+  color: var(--brand-1);
+  background: color-mix(in oklab, var(--brand-1) 15%, transparent);
+}
+
+/* Stage — floats the shot over a soft field of the icon's light */
+.shots-stage {
+  position: relative;
+  margin-top: 30px;
+}
+.shots-glow {
+  position: absolute;
+  inset: -4% 4% 8%;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    radial-gradient(58% 60% at 50% 28%, color-mix(in oklab, var(--brand-glow-1) 34%, transparent), transparent 70%),
+    radial-gradient(48% 52% at 80% 10%, color-mix(in oklab, var(--brand-glow-2) 30%, transparent), transparent 72%);
+  filter: blur(20px);
+  opacity: 0.9;
+}
+:root[data-theme="light"] .shots-glow { opacity: 0.5; }
+
+.shots-panel { display: none; }
+.shots-panel.on { display: block; }
+
+/* Wide retina shots scale to the column — never overflow the page */
+.shot-img {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  height: auto;
+}
+/* Theme swap — both shots in the DOM, CSS picks, exactly like .theme-toggle */
+.shot-light { display: none; }
+.shot-dark { display: block; }
+:root[data-theme="light"] .shot-light { display: block; }
+:root[data-theme="light"] .shot-dark { display: none; }
+
+.shots-panel .mock-caption { margin-top: 18px; }
+
+@media (max-width: 560px) {
+  .shots-tabs { max-width: 100%; }
+  .shot-tab { padding: 7px 11px; font-size: 12px; }
+}
