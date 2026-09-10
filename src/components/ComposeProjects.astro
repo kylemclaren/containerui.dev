@@ -1,0 +1,102 @@
+---
+import Icon from "./Icon.astro"
+
+// Compose projects (experimental, v0.6.0): import a compose.yaml, preview its
+// services + compatibility diagnostics, then start the stack and get per-service
+// Inspect / Logs / Console. Shown as the same two-card flow as registries
+// (file preview → running project), mirroring the real Projects screen.
+const services = [
+  { name: "web", src: "build: ./web", ports: "8080:80", profile: "" },
+  { name: "api", src: "ghcr.io/acme/api:2.4.1", ports: "3000", profile: "" },
+  { name: "redis", src: "redis:7-alpine", ports: "", profile: "" },
+  { name: "mailhog", src: "mailhog/mailhog", ports: "8025", profile: "dev" },
+]
+
+const caps = [
+  "Import a compose.yaml — read-only, nothing starts until you say so",
+  "Preview services, build contexts, ports, dependencies, and profiles before you run",
+  "Compatibility diagnostics block a start on fields the backend would silently ignore",
+  "Start, rebuild, or stop the stack; Inspect, Logs, and Console on every service",
+  "Stops only containers carrying the project's ownership label — never a prefix guess",
+  "Named volumes and bind mounts survive a recreate; file references persist across launches",
+]
+---
+<section class="section" id="compose">
+  <div class="wrap">
+    <div class="section-head" data-reveal>
+      <span class="eyebrow"><span class="dot"></span>New · Compose projects <span class="exp-chip">experimental</span></span>
+      <h2 class="h2">Run the whole stack, not one container</h2>
+      <p class="lede">
+        Point ContainerUI at a Compose file and it becomes a project: every service previewed,
+        every incompatibility surfaced up front, one click to bring it all up. Powered by the
+        optional <a href="https://github.com/Mcrich23/Container-Compose" rel="noopener">Container-Compose</a>{" "}backend — no Docker daemon in sight.
+      </p>
+    </div>
+
+    <div class="cp-stage" data-reveal style="--reveal-delay:80ms">
+      <div class="cp-glow" aria-hidden="true"></div>
+
+      <!-- Import + preview -->
+      <div class="mini cp-card">
+        <div class="mini-head"><Icon name="layers" size={16} /><b>shop</b><small>compose.yaml</small></div>
+        <div class="cp-svcs">
+          {services.map((s) => (
+            <div class:list={["cp-svc", { "cp-svc-off": s.profile }]}>
+              <span class="cp-svc-name mono">{s.name}</span>
+              <span class="cp-svc-src mono">{s.src}</span>
+              {s.ports && <span class="cp-svc-port mono">{s.ports}</span>}
+              {s.profile && <span class="cp-svc-prof">profile · {s.profile}</span>}
+            </div>
+          ))}
+        </div>
+        <div class="cp-diag">
+          <span class="cp-diag-ic"><Icon name="check" size={13} /></span>
+          <span class="cp-diag-txt">
+            <b>Compatible with Container-Compose 1.1.0</b>
+            <small>4 services · 1 build · 3 published ports</small>
+          </span>
+        </div>
+        <div class="cp-go"><Icon name="play" size={13} />Start / recreate…</div>
+      </div>
+
+      <!-- flow connector -->
+      <div class="cp-arrow" aria-hidden="true">
+        <span class="ring"><Icon name="arrow" size={20} /></span>
+        <span>compose up</span>
+      </div>
+
+      <!-- Running project -->
+      <div class="mini cp-card">
+        <div class="mini-head"><Icon name="cube" size={16} /><b>shop</b><small><span class="badge badge-run"><span class="dot dot-pulse"></span>3 running</span></small></div>
+        <div class="cp-run">
+          {services.filter((s) => !s.profile).map((s) => (
+            <div class="cp-run-row">
+              <span class="dot dot-pulse" style="color:var(--run)"></span>
+              <span class="cp-run-name mono">shop-{s.name}</span>
+              <span class="cp-run-acts">
+                <span title="Inspect"><Icon name="inspect" size={13} /></span>
+                <span title="Logs"><Icon name="logs" size={13} /></span>
+                <span title="Console"><Icon name="terminal" size={13} /></span>
+              </span>
+            </div>
+          ))}
+        </div>
+        <div class="cp-foot">
+          <span class="cp-stop"><Icon name="stop" size={12} />Stop project</span>
+          <span class="cp-cmd mono">container-compose up --file compose.yaml --detach</span>
+        </div>
+      </div>
+    </div>
+
+    <ul class="cp-caps" data-reveal style="--reveal-delay:120ms">
+      {caps.map((c) => (
+        <li class="cap"><span class="ck"><Icon name="check" /></span><span>{c}</span></li>
+      ))}
+    </ul>
+
+    <p class="cp-fine" data-reveal style="--reveal-delay:160ms">
+      Partial Compose support today — one file per project, no restart policies, secrets, or
+      multi-file merging. The <a href="https://github.com/kylemclaren/container-ui/blob/main/docs/compose.md" rel="noopener">compatibility contract</a> spells out exactly what's passed through and what's blocked.
+    </p>
+  </div>
+</section>
